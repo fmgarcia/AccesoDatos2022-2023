@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class Ficheros {
@@ -111,6 +113,25 @@ public class Ficheros {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	
+	public static boolean anyadirFichero(String directorio, String nombreFichero, List<String> lineas) {
+		try {
+			Files.write(Paths.get(directorio + "/" + nombreFichero), lineas, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}		
+	}
+	
+	public static void escribirFichero(String rutaCompleta,List<String> lineas){
+		try {
+			Files.write(Paths.get(rutaCompleta), lineas);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
