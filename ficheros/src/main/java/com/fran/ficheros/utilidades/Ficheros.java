@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.List;
 
 public class Ficheros {
@@ -80,75 +81,75 @@ public class Ficheros {
 	 * @throws IOException
 	 * @author Fran
 	 */
-	public static void crearFichero(String rutaCompleta) throws IOException {
+	public static boolean crearFichero(String rutaCompleta) {
 		File fichero = new File(rutaCompleta);
-		crearFichero(fichero.getParent(), fichero.getName());
+		return crearFichero(fichero.getParent(), fichero.getName());
 	}
 
-	public static void eliminarFichero(String directorio, String nombreFichero) {
+	public static boolean eliminarFichero(String directorio, String nombreFichero) {
 		File ruta = new File(directorio);
 		File f = new File(ruta, nombreFichero);
 		if (f.exists()) { // borramos el fichero
 			if (f.isFile()) { // Nos aseguramos que solo borra ficheros y no carpetas
 				if (f.delete()) { // Ha borrado el fichero
 					System.out.println("Fichero eliminado");
+					return true;
 				} else {
 					System.out.println("No he podido eliminar el fichero " + f.getName());
+					return false;
 				}
 			} else {
 				System.out.println("El nombre " + f.getName() + " no es un fichero simple");
+				return false;
 			}
 		} else { // El fichero no existe, no borramos nada
 			System.out.println("El fichero " + f.getName() + " no existe.");
+			return false;
 		}
 	}
 
-	public static void eliminarFichero(String rutaCompleta) {
+	public static boolean eliminarFichero(String rutaCompleta) {
 		File fichero = new File(rutaCompleta);
-		eliminarFichero(fichero.getParent(), fichero.getName());
+		return eliminarFichero(fichero.getParent(), fichero.getName());
 	}
 
-	public static void renombrarFichero(String directorio, String nombreFichero, String nuevoNombre) {
+	public static boolean renombrarFichero(String directorio, String nombreFichero, String nuevoNombre) {
 		File ruta = new File(directorio);
 		File f = new File(ruta, nombreFichero);
 		if(f.exists()) {
 			if (f.isFile()) {
 				if (f.renameTo(new File(ruta, nuevoNombre))) {
 					System.out.println("Se ha cambiado el nombre correctamente");
+					return true;
 				} else {
 					System.out.println("No he podido cambiar el nombre");
+					return false;
 				} 
 			}else {
 				System.out.println("El nombre " + f.getName() + " no es un fichero simple");
+				return false;
 			}
 		} else {
 			System.out.println("El fichero " + f.getName() + " no existe");
+			return false;
 		}
 	}
 	
-	public static void leerDirectorio(String directorio) {
+	/**
+	 * Dado un directorio devuelve una lista con los nombres de sus archivos contenidos
+	 * @param directorio
+	 * @return
+	 */
+	public static List<String> obtenerDatosDirectorio(String directorio) {
 		File ruta = new File(directorio);
 		if(ruta.exists()) {
-			String[] lista = ruta.list();
-			//  ahora recorreré el array
-			for (int i = 0; i < lista.length; i++) {
-				System.out.println(lista[i]);
-			}
-			
+			return Arrays.asList(ruta.list());
 		} else {
 			System.out.println("El directorio " + directorio + " no existe");
-		}
-	}
-	
-	public static String[] obtenerDatosDirectorio(String directorio) {
-		File ruta = new File(directorio);
-		if(ruta.exists()) {
-			return ruta.list();			
-		} else {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Leer un Fichero en Java 5
 	 * Dado un nombre de fichero devolverá sus líneas hasta un máximo
