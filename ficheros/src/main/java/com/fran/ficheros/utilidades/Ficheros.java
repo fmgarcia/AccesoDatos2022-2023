@@ -25,17 +25,23 @@ public class Ficheros {
 	 * @throws IOException
 	 * @author Fran
 	 */
-	public static boolean crearFichero(String directorio, String nombreFichero) throws IOException {
+	public static boolean crearFichero(String directorio, String nombreFichero) {
 		File ruta = new File(directorio);
 		File f = new File(ruta, nombreFichero);
 		if (!f.exists()) { // El fichero no existe
 			if (!ruta.exists()) { // La carpeta no existe
 				if (ruta.mkdir()) { // La carpeta la he podido crear
-					if (f.createNewFile()) { // El fichero se ha creado
-						System.out.println("Fichero " + f.getName() + " creado");
-						return true;
-					} else {
-						System.out.println("No se ha podido crear el fichero " + f.getName());
+					try {
+						if (f.createNewFile()) { // El fichero se ha creado
+							System.out.println("Fichero " + f.getName() + " creado");
+							return true;
+						} else {
+							System.out.println("No se ha podido crear el fichero " + f.getName());
+							return false;
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 						return false;
 					}
 				} else { // La carpeta no se ha podido crear
@@ -43,11 +49,17 @@ public class Ficheros {
 					return false;
 				}
 			} else { // La carpeta si existe
-				if (f.createNewFile()) { // El fichero se ha creado
-					System.out.println("Fichero " + f.getName() + " creado");
-					return true;
-				} else {
-					System.out.println("No se ha podido crear el fichero " + f.getName());
+				try {
+					if (f.createNewFile()) { // El fichero se ha creado
+						System.out.println("Fichero " + f.getName() + " creado");
+						return true;
+					} else {
+						System.out.println("No se ha podido crear el fichero " + f.getName());
+						return false;
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 					return false;
 				}
 			}

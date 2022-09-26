@@ -1,5 +1,6 @@
 package com.fran.ficheros;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,10 @@ public class App
     	//Ficheros.leerFichero8("prueba.txt").forEach(l->System.out.println(l));
     	//Ficheros.leerFichero8("c:/ficheros/datos.txt").forEach(l->System.out.println(l));
     	//Ficheros.anyadirFichero("c:/ficheros", "pruebaTexto.txt", lineas);
-    	Ficheros.escribirFichero("c:/ficheros/pruebaEscritura.txt", lineas);
+    	//Ficheros.escribirFichero("c:/ficheros/pruebaEscritura.txt", lineas);
+
+		System.out.println(Ficheros.crearFichero("c:/ficheroooos", "dam2223.txt")?"Todo correcto":"Fallo");
+
 
     }
 }
