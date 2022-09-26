@@ -13,6 +13,120 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class Ficheros {
+	
+	
+	/**
+	 * Crea un fichero en caso de no existir. Si existe solamente informa de su
+	 * existencia pero no lo reemplaza. Si no existe la carpeta que contiene el
+	 * fichero también la crea.
+	 * 
+	 * @param directorio    Directorio donde queremos crear el fichero
+	 * @param nombreFichero Nombre del fichero con la extensión incluida
+	 * @throws IOException
+	 * @author Fran
+	 */
+	public static void crearFichero(String directorio, String nombreFichero) throws IOException {
+		File ruta = new File(directorio);
+		File f = new File(ruta, nombreFichero);
+		if (!f.exists()) { // El fichero no existe
+			if (!ruta.exists()) { // La carpeta no existe
+				if (ruta.mkdir()) { // La carpeta la he podido crear
+					System.out.println(f.createNewFile() ? "Fichero " + f.getName() + " creado"
+							: "No se ha podido crear el fichero " + f.getName());
+				} else { // La carpeta no se ha podido crear
+					System.out.println("No he podido crear la carpeta " + ruta.getName());
+				}
+			} else { // La carpeta si existe
+				if (f.createNewFile()) { // El fichero se ha creado
+					System.out.println("Fichero " + f.getName() + " creado");
+				} else {
+					System.out.println("No se ha podido crear el fichero " + f.getName());
+				}
+			}
+		} else { // El fichero existe
+			System.out.println("Fichero " + f.getName() + " ya existe");
+			System.out.println("Tamaño " + f.length() + " bytes");
+		}
+	}
+
+	/**
+	 * Crea un fichero en caso de no existir. Si existe solamente informa de su
+	 * existencia pero no lo reemplaza. Si no existe la carpeta que contiene el
+	 * fichero también la crea.
+	 * 
+	 * @param rutaCompleta Será la ruta completa incluido el nombre del fichero con
+	 *                     su extensión (ex. "c:/ficheros/prueba.txt")
+	 * @throws IOException
+	 * @author Fran
+	 */
+	public static void crearFichero(String rutaCompleta) throws IOException {
+		File fichero = new File(rutaCompleta);
+		crearFichero(fichero.getParent(), fichero.getName());
+	}
+
+	public static void eliminarFichero(String directorio, String nombreFichero) {
+		File ruta = new File(directorio);
+		File f = new File(ruta, nombreFichero);
+		if (f.exists()) { // borramos el fichero
+			if (f.isFile()) { // Nos aseguramos que solo borra ficheros y no carpetas
+				if (f.delete()) { // Ha borrado el fichero
+					System.out.println("Fichero eliminado");
+				} else {
+					System.out.println("No he podido eliminar el fichero " + f.getName());
+				}
+			} else {
+				System.out.println("El nombre " + f.getName() + " no es un fichero simple");
+			}
+		} else { // El fichero no existe, no borramos nada
+			System.out.println("El fichero " + f.getName() + " no existe.");
+		}
+	}
+
+	public static void eliminarFichero(String rutaCompleta) {
+		File fichero = new File(rutaCompleta);
+		eliminarFichero(fichero.getParent(), fichero.getName());
+	}
+
+	public static void renombrarFichero(String directorio, String nombreFichero, String nuevoNombre) {
+		File ruta = new File(directorio);
+		File f = new File(ruta, nombreFichero);
+		if(f.exists()) {
+			if (f.isFile()) {
+				if (f.renameTo(new File(ruta, nuevoNombre))) {
+					System.out.println("Se ha cambiado el nombre correctamente");
+				} else {
+					System.out.println("No he podido cambiar el nombre");
+				} 
+			}else {
+				System.out.println("El nombre " + f.getName() + " no es un fichero simple");
+			}
+		} else {
+			System.out.println("El fichero " + f.getName() + " no existe");
+		}
+	}
+	
+	public static void leerDirectorio(String directorio) {
+		File ruta = new File(directorio);
+		if(ruta.exists()) {
+			String[] lista = ruta.list();
+			//  ahora recorreré el array
+			for (int i = 0; i < lista.length; i++) {
+				System.out.println(lista[i]);
+			}
+			
+		} else {
+			System.out.println("El directorio " + directorio + " no existe");
+		}
+	}
+	
+	public static String[] obtenerDatosDirectorio(String directorio) {
+		File ruta = new File(directorio);
+		if(ruta.exists()) {
+			return ruta.list();			
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Leer un Fichero en Java 5
