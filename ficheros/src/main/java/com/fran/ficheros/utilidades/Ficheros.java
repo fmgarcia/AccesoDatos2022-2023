@@ -25,27 +25,36 @@ public class Ficheros {
 	 * @throws IOException
 	 * @author Fran
 	 */
-	public static void crearFichero(String directorio, String nombreFichero) throws IOException {
+	public static boolean crearFichero(String directorio, String nombreFichero) throws IOException {
 		File ruta = new File(directorio);
 		File f = new File(ruta, nombreFichero);
 		if (!f.exists()) { // El fichero no existe
 			if (!ruta.exists()) { // La carpeta no existe
 				if (ruta.mkdir()) { // La carpeta la he podido crear
-					System.out.println(f.createNewFile() ? "Fichero " + f.getName() + " creado"
-							: "No se ha podido crear el fichero " + f.getName());
+					if (f.createNewFile()) { // El fichero se ha creado
+						System.out.println("Fichero " + f.getName() + " creado");
+						return true;
+					} else {
+						System.out.println("No se ha podido crear el fichero " + f.getName());
+						return false;
+					}
 				} else { // La carpeta no se ha podido crear
 					System.out.println("No he podido crear la carpeta " + ruta.getName());
+					return false;
 				}
 			} else { // La carpeta si existe
 				if (f.createNewFile()) { // El fichero se ha creado
 					System.out.println("Fichero " + f.getName() + " creado");
+					return true;
 				} else {
 					System.out.println("No se ha podido crear el fichero " + f.getName());
+					return false;
 				}
 			}
 		} else { // El fichero existe
 			System.out.println("Fichero " + f.getName() + " ya existe");
 			System.out.println("Tamaño " + f.length() + " bytes");
+			return false;
 		}
 	}
 
