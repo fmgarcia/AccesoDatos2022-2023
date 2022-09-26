@@ -1,5 +1,7 @@
 package com.fran.serializacion;
 
+import com.fran.serializacion.entidades.Persona;
+
 /**
  * Hello world!
  *
@@ -8,6 +10,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Persona fran = new Persona("111X","Fran");
     }
 }
