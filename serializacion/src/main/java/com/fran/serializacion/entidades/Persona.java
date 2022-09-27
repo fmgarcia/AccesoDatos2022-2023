@@ -1,9 +1,11 @@
 package com.fran.serializacion.entidades;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Persona {
+public class Persona implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	String dni;
 	String nombre;
 	
