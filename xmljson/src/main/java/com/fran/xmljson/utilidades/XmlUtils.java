@@ -14,7 +14,7 @@ import com.fran.xmljson.entidades.Asignatura;
 
 public class XmlUtils {
 
-	public static List<Asignatura> procesarXml(String directorio, String nombreArchivo) {
+	public static List<Asignatura> procesarXmlSax(String directorio, String nombreArchivo) {
 		List<Asignatura> asignaturas = new ArrayList<Asignatura>();
 		try {
 			SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
