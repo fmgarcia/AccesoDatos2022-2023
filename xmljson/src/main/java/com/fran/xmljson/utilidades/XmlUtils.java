@@ -81,12 +81,12 @@ public class XmlUtils {
 		return null;
 	}
 	
-	public static void procesarXmlDom(String rutaCompleta) {
+	public static void mostrarXmlDom(String rutaCompleta) {
 		try {
 			File inputFile = new File(rutaCompleta);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(inputFile);
+			Document doc = dBuilder.parse(inputFile);  // Comprueba que es un XML valido
 			doc.getDocumentElement().normalize();
 			System.out.println("Elemento base : " + doc.getDocumentElement().getNodeName());
 			NodeList nList = doc.getElementsByTagName("asignatura");
@@ -112,7 +112,35 @@ public class XmlUtils {
 
 	}
 
+	public static List<Asignatura> procesarXmlDom(String directorio, String nombreArchivo) {
+		List<Asignatura> asignaturas = new ArrayList<Asignatura>();
+		try {
+			File inputFile = new File(directorio + "/" + nombreArchivo);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(inputFile);  // Comprueba que es un XML valido
+			doc.getDocumentElement().normalize();
+			NodeList nList = doc.getElementsByTagName("asignatura");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					asignaturas.add(new Asignatura(eElement.getAttribute("id"),
+							eElement.getElementsByTagName("nombre").item(0).getTextContent(),
+							eElement.getElementsByTagName("cicloFormativo").item(0).getTextContent(),
+							eElement.getElementsByTagName("curso").item(0).getTextContent(),
+							eElement.getElementsByTagName("profesor").item(0).getTextContent()));
+				}
+			}
+			return asignaturas;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
-	
-	
+	/*public static List<Noticia> procesarMarcaDom(String cadena) {
+		
+	}*/
+
 }
