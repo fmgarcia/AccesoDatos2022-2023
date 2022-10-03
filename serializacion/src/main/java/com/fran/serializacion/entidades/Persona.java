@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Persona implements Serializable{
 	
+	
 	private static final long serialVersionUID = 1L;
 	String dni;
 	String nombre;

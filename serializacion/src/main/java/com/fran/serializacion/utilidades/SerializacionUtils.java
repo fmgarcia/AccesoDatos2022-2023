@@ -30,6 +30,23 @@ public class SerializacionUtils {
 		return false;
 	}
 	
+	public static <T> boolean serializarObjeto(String directorio, String nombreArchivo, T p) {
+		
+		File fichero = new File(directorio + "/" + nombreArchivo);
+		try {
+			FileOutputStream ficheroSalida = new FileOutputStream(fichero);
+			ObjectOutputStream ficheroObjetos = new ObjectOutputStream(ficheroSalida);
+			ficheroObjetos.writeObject(p);  // Serializa
+			ficheroObjetos.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public static boolean serializarListaPersonas(String directorio, String nombreArchivo, List<Persona> personas) {
 		
 		File fichero = new File(directorio + "/" + nombreArchivo);
@@ -71,6 +88,25 @@ public class SerializacionUtils {
 			Persona p = (Persona) ficheroObjetos.readObject();  // DesSerializa
 			ficheroObjetos.close();
 			return p;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
+	public static <T> T desSerializarObjeto(String directorio, String nombreArchivo) {
+		
+		File fichero = new File(directorio + "/" + nombreArchivo);
+		try {
+			FileInputStream ficheroSalida = new FileInputStream(fichero);
+			ObjectInputStream ficheroObjetos = new ObjectInputStream(ficheroSalida);
+			T objeto = (T) ficheroObjetos.readObject();  // DesSerializa
+			ficheroObjetos.close();
+			return objeto;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
