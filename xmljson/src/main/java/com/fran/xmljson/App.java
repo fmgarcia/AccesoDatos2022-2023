@@ -2,8 +2,10 @@ package com.fran.xmljson;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.fran.xmljson.entidades.Noticia;
+import com.fran.xmljson.entidades.Tarea;
 import com.fran.xmljson.utilidades.InternetUtils;
 import com.fran.xmljson.utilidades.JsonUtils;
 import com.fran.xmljson.utilidades.XmlUtils;
@@ -32,6 +34,15 @@ public class App
     	.forEach(n->System.out.println(n));*/
     	//JsonUtils.leerJsonDesdeFichero("c:/ficheros/profesor.json");
     	//JsonUtils.escribirJsonSimple();
-    	JsonUtils.leerTareasInternet("https://jsonplaceholder.typicode.com/todos");
+    	//JsonUtils.leerTareasInternet("https://jsonplaceholder.typicode.com/todos");
+    	/*JsonUtils.devolverTareasInternet("https://jsonplaceholder.typicode.com/todos").stream()
+    		.filter(e->e.isCompleted()==false)
+    		.forEach(e->System.out.println(e));*/
+    	List<Tarea> tareas = JsonUtils.devolverArrayInternetGenerico("https://jsonplaceholder.typicode.com/todos");
+    	tareas.stream()
+			.filter(e->e.isCompleted()==false)
+			.forEach(e->System.out.println(e));
+    	
+    			
     }
 }

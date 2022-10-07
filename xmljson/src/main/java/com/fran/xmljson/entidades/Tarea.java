@@ -4,16 +4,16 @@ import java.util.Objects;
 
 public class Tarea {
 	
-	private int id;
+	private long id;
 	private boolean completed;
 	private String title;
-	private int userId;
+	private long userId;
 
 	public Tarea() {
 		
 	}
 
-	public Tarea(int id, boolean completed, String title, int userId) {
+	public Tarea(long id, boolean completed, String title, long userId) {
 		super();
 		this.id = id;
 		this.completed = completed;
@@ -21,11 +21,11 @@ public class Tarea {
 		this.userId = userId;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -45,11 +45,11 @@ public class Tarea {
 		this.title = title;
 	}
 
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 

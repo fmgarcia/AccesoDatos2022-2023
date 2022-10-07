@@ -107,16 +107,43 @@ public class JsonUtils {
 			Iterator<?> elementos = ja.iterator();
 			elementos.forEachRemaining(e -> {
 				JSONObject elementoObjeto = (JSONObject) e;
-				resultado.add(new Tarea((int) elementoObjeto.get("id"),
+				resultado.add(new Tarea((long) elementoObjeto.get("id"),
 						(boolean) elementoObjeto.get("completed"),
 						(String) elementoObjeto.get("title"),
-						(int) elementoObjeto.get("id")));
+						(long) elementoObjeto.get("id")));
 			});
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return resultado;
+	}
+	
+	public static <T> List<T> devolverArrayInternetGenerico(String url) {
+		Object obj;
+		List<T> resultado = new ArrayList<T>();
+		try {
+			obj = new JSONParser().parse(InternetUtils.readUrl(url));	
+			// cogiendo el array como elemento principal
+			JSONArray ja = (JSONArray) obj;
+			// recorremos los elementos del array
+			Iterator<?> elementos = ja.iterator();
+			elementos.forEachRemaining(e -> {
+				JSONObject elementoObjeto = (JSONObject) e;
+				insertarElemento(resultado,elementoObjeto);
+			});
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+	
+	public static <T> void insertarElemento(List<T> resultado, JSONObject elementoObjeto) {
+		resultado.add((T)new Tarea((long) elementoObjeto.get("id"),
+				(boolean) elementoObjeto.get("completed"),
+				(String) elementoObjeto.get("title"),
+				(long) elementoObjeto.get("id")));
 	}
 
 	public static void escribirJsonSimple() {
