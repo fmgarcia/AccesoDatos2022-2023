@@ -75,6 +75,26 @@ public class JsonUtils {
 		}
 
 	}
+	
+	
+	public static void leerTareasInternet(String url) {
+		Object obj;
+		try {
+
+			obj = new JSONParser().parse(InternetUtils.readUrl(url));	
+			// cogiendo números de teléfonos
+			JSONArray ja = (JSONArray) obj;
+			// iterando números de teléfonos
+			Iterator<?> numeros = ja.iterator();
+			numeros.forEachRemaining(e -> {
+				Iterator<Map.Entry> campos = ((Map) e).entrySet().iterator();
+				campos.forEachRemaining(campo -> System.out.println(campo.getKey() + ": " + campo.getValue()));
+			});
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void escribirJsonSimple() {
 		// creando JSONObject
