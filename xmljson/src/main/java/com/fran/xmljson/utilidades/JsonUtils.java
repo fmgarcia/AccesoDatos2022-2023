@@ -16,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.fran.xmljson.entidades.FootballPlayer;
+import com.fran.xmljson.entidades.Tarea;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -80,20 +81,42 @@ public class JsonUtils {
 	public static void leerTareasInternet(String url) {
 		Object obj;
 		try {
-
 			obj = new JSONParser().parse(InternetUtils.readUrl(url));	
-			// cogiendo números de teléfonos
+			// cogiendo el array como elemento principal
 			JSONArray ja = (JSONArray) obj;
-			// iterando números de teléfonos
-			Iterator<?> numeros = ja.iterator();
-			numeros.forEachRemaining(e -> {
-				Iterator<Map.Entry> campos = ((Map) e).entrySet().iterator();
+			// recorremos los elementos del array
+			Iterator<?> elementos = ja.iterator();
+			elementos.forEachRemaining(e -> {
+				Iterator<Map.Entry> campos = ((Map) e).entrySet().iterator(); // recorremos los campos de cada elemento del array
 				campos.forEachRemaining(campo -> System.out.println(campo.getKey() + ": " + campo.getValue()));
 			});
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static List<Tarea> devolverTareasInternet(String url) {
+		Object obj;
+		List<Tarea> resultado = new ArrayList<Tarea>();
+		try {
+			obj = new JSONParser().parse(InternetUtils.readUrl(url));	
+			// cogiendo el array como elemento principal
+			JSONArray ja = (JSONArray) obj;
+			// recorremos los elementos del array
+			Iterator<?> elementos = ja.iterator();
+			elementos.forEachRemaining(e -> {
+				JSONObject elementoObjeto = (JSONObject) e;
+				resultado.add(new Tarea((int) elementoObjeto.get("id"),
+						(boolean) elementoObjeto.get("completed"),
+						(String) elementoObjeto.get("title"),
+						(int) elementoObjeto.get("id")));
+			});
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 
 	public static void escribirJsonSimple() {

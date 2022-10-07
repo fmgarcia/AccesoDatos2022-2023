@@ -31,6 +31,7 @@ public class App
     	.filter(n->n.getTitle().contains("Madrid") || n.getDescription().contains("Madrid"))
     	.forEach(n->System.out.println(n));*/
     	//JsonUtils.leerJsonDesdeFichero("c:/ficheros/profesor.json");
-    	JsonUtils.escribirJsonSimple();
+    	//JsonUtils.escribirJsonSimple();
+    	JsonUtils.leerTareasInternet("https://jsonplaceholder.typicode.com/todos");
     }
 }
