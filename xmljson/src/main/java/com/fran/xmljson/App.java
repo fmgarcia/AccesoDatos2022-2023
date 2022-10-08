@@ -38,11 +38,19 @@ public class App
     	/*JsonUtils.devolverTareasInternet("https://jsonplaceholder.typicode.com/todos").stream()
     		.filter(e->e.isCompleted()==false)
     		.forEach(e->System.out.println(e));*/
-    	List<Tarea> tareas = JsonUtils.devolverArrayInternetGenerico("https://jsonplaceholder.typicode.com/todos");
+    	/*List<Tarea> tareas = JsonUtils.devolverArrayInternetGenerico("https://jsonplaceholder.typicode.com/todos");
     	tareas.stream()
 			.filter(e->e.isCompleted()==false)
-			.forEach(e->System.out.println(e));
-    	
+			.forEach(e->System.out.println(e));*/
+    	//JsonUtils.gson1();
+    	//JsonUtils.gson2();
+    	//JsonUtils.leerTareasGson("https://jsonplaceholder.typicode.com/todos");
+    	/*JsonUtils.devolverTareasGson("https://jsonplaceholder.typicode.com/todos").stream()
+    	.filter(e->e.isCompleted()==false)
+		.forEach(e->System.out.println(e));*/
+    	JsonUtils.devolverGsonGenerico("https://jsonplaceholder.typicode.com/todos",Tarea[].class).stream()
+    	.filter(e->e.isCompleted()==false)
+		.forEach(e->System.out.println(e));
     			
     }
 }

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.json.simple.parser.ParseException;
 
 import com.fran.xmljson.entidades.FootballPlayer;
 import com.fran.xmljson.entidades.Tarea;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -230,4 +232,57 @@ public class JsonUtils {
 		}
 
 	}
+	
+	public static void gson2() {
+		String jsonAll = "[{\"dorsal\":1,\"name\":\"Casillas\",\"demarcation\":[\"Goalkeeper\"],\"team\":\"Real Madrid\"},"
+                + "{\"dorsal\":15,\"name\":\"Ramos\",\"demarcation\":[\"Right back\",\"Centre-back\"],\"team\":\"Real Madrid\"},"
+                + "{\"dorsal\":3,\"name\":\"Pique\",\"demarcation\":[\"Centre-back\"],\"team\":\"FC Barcelona\"},"
+                + "{\"dorsal\":5,\"name\":\"Puyol\",\"demarcation\":[\"Centre-back\"],\"team\":\"FC Barcelona\"},"
+                + "{\"dorsal\":11,\"name\":\"Capdevila\",\"demarcation\":[\"Left back\"],\"team\":\"Villareal\"},"
+                + "{\"dorsal\":14,\"name\":\"Xabi Alonso\",\"demarcation\":[\"Defensive midfield\",\"Midfield\"],\"team\":\"Real Madrid\"},"
+                + "{\"dorsal\":16,\"name\":\"Busquets\",\"demarcation\":[\"Defensive midfield\"],\"team\":\"FC Barcelona\"},"
+                + "{\"dorsal\":8,\"name\":\"Xavi Hernandez\",\"demarcation\":[\"Midfielder\"],\"team\":\"FC Barcelona\"},"
+                + "{\"dorsal\":18,\"name\":\"Pedrito\",\"demarcation\":[\"Left winger\",\"False forward\"],\"team\":\"FC Barcelona\"},"
+                + "{\"dorsal\":6,\"name\":\"Iniesta\",\"demarcation\":[\"Right winger\",\"Midfielder\"],\"team\":\"FC Barcelona\"},"
+                + "{\"dorsal\":7,\"name\":\"Villa\",\"demarcation\":[\"Centre forward\"],\"team\":\"FC Barcelona\"}]";
+
+        Gson gson = new Gson();
+        FootballPlayer[] footballPlayers = gson.fromJson(jsonAll,
+                FootballPlayer[].class);
+
+        for (FootballPlayer footballPlayer : footballPlayers) {
+            System.out.println(footballPlayer);
+        }
+	}
+	
+	public static void leerTareasGson(String url) {
+        Gson gson = new Gson();
+        Tarea[] tareas = gson.fromJson(InternetUtils.readUrl(url),
+                Tarea[].class);
+        for (Tarea tarea : tareas) {
+            System.out.println(tarea);
+        }
+	}
+	/**
+	 * Leemos una url con un array de tareas y las devuelve en una lista
+	 * @param url
+	 * @return
+	 */
+	public static List<Tarea> devolverTareasGson(String url) {
+        return Arrays.asList(new Gson().fromJson(InternetUtils.readUrl(url),Tarea[].class));
+	}
+	
+	/**
+	 * Metódo genérico que dada una url con un json donde se encuentra un array de objetos
+	 * devuelve una lista de ese tipo de objetos que contiene todos los objetos introducidos.
+	 * Ejemplo de llamada: JsonUtils.devolverGsonGenerico("https://jsonplaceholder.typicode.com/todos",Tarea[].class)
+	 * @param <T> Nombre de la clase
+	 * @param url
+	 * @param clase Array de elementos del tipo de la clase
+	 * @return
+	 */
+	public static <T> List<T> devolverGsonGenerico(String url,Class<T[]> clase) {
+        return Arrays.asList(new Gson().fromJson(InternetUtils.readUrl(url),clase));
+	}
+	
 }
