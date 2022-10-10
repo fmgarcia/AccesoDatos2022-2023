@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import com.fran.xmljson.entidades.Film;
 import com.fran.xmljson.entidades.Noticia;
+import com.fran.xmljson.entidades.People;
+import com.fran.xmljson.entidades.People2;
 import com.fran.xmljson.entidades.Post;
 import com.fran.xmljson.entidades.Tarea;
 import com.fran.xmljson.utilidades.InternetUtils;
@@ -52,7 +55,17 @@ public class App
     	/*JsonUtils.devolverArrayGsonGenerico("https://jsonplaceholder.typicode.com/todos",Tarea[].class).stream()
     	.filter(e->e.isCompleted()==false)
 		.forEach(e->System.out.println(e));*/
-    	System.out.println(JsonUtils.devolverObjetoGsonGenerico("https://jsonplaceholder.typicode.com/posts/1",Post.class));
-    			
+    	//System.out.println(JsonUtils.devolverObjetoGsonGenerico("https://jsonplaceholder.typicode.com/posts/1",Post.class));
+    	//System.out.println(JsonUtils.devolverObjetoGsonGenerico("https://swapi.dev/api/people/1/?format=json",People.class));		
+    	// Obtener las url's de las películas para un personaje
+    	/*JsonUtils.devolverObjetoGsonGenerico("https://swapi.dev/api/people/1/?format=json",People2.class)
+    	.getFilms()
+    	.forEach(e->System.out.println(e));*/
+    	// Obtener el nombre de las películas para un personaje
+    	JsonUtils.devolverObjetoGsonGenerico("https://swapi.dev/api/people/1/?format=json",People2.class)
+    	.getFilms()
+    	.forEach(e->System.out.println(JsonUtils.devolverObjetoGsonGenerico(e + "?format=json",Film.class).getTitle()));	
+    	
+    	
     }
 }
