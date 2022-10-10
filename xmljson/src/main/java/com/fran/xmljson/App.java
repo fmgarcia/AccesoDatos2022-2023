@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.fran.xmljson.entidades.Noticia;
+import com.fran.xmljson.entidades.Post;
 import com.fran.xmljson.entidades.Tarea;
 import com.fran.xmljson.utilidades.InternetUtils;
 import com.fran.xmljson.utilidades.JsonUtils;
@@ -48,9 +49,10 @@ public class App
     	/*JsonUtils.devolverTareasGson("https://jsonplaceholder.typicode.com/todos").stream()
     	.filter(e->e.isCompleted()==false)
 		.forEach(e->System.out.println(e));*/
-    	JsonUtils.devolverGsonGenerico("https://jsonplaceholder.typicode.com/todos",Tarea[].class).stream()
+    	/*JsonUtils.devolverArrayGsonGenerico("https://jsonplaceholder.typicode.com/todos",Tarea[].class).stream()
     	.filter(e->e.isCompleted()==false)
-		.forEach(e->System.out.println(e));
+		.forEach(e->System.out.println(e));*/
+    	System.out.println(JsonUtils.devolverObjetoGsonGenerico("https://jsonplaceholder.typicode.com/posts/1",Post.class));
     			
     }
 }

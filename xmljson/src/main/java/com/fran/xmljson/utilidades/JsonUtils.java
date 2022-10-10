@@ -281,8 +281,12 @@ public class JsonUtils {
 	 * @param clase Array de elementos del tipo de la clase
 	 * @return
 	 */
-	public static <T> List<T> devolverGsonGenerico(String url,Class<T[]> clase) {
+	public static <T> List<T> devolverArrayGsonGenerico(String url,Class<T[]> clase) {
         return Arrays.asList(new Gson().fromJson(InternetUtils.readUrl(url),clase));
+	}
+	
+	public static <T> T devolverObjetoGsonGenerico(String url, Class<T> clase) {
+        return new Gson().fromJson(InternetUtils.readUrl(url),clase);
 	}
 	
 }
