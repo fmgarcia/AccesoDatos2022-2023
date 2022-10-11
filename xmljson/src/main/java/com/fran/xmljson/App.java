@@ -73,9 +73,9 @@ public class App
     	//System.out.println(JsonUtils.crearJsonPretty(new Tarea(1,true,"Título de prueba",10)));
     	//System.out.println(InternetUtils.readUrl("https://api.football-data.org/v4/teams/86/matches?status=SCHEDULED")); // falla porque no tiene el token
     	//System.out.println(InternetUtils.readUrl("https://api.football-data.org/v4/teams/86/matches?status=SCHEDULED",TOKEN_FOOTBALL_DATA)); 
-    	InternetUtils.readUrlList("https://amanosupermercados.com/4-fruta-y-verdura?page=1").stream()
+    	/*InternetUtils.readUrlList("https://amanosupermercados.com/4-fruta-y-verdura?page=1").stream()
     	.filter(e->e.contains("itemprop"))
-    	.forEach(e->System.out.println(e));
+    	.forEach(e->System.out.println(e));*/
 
     	
     	
