@@ -19,10 +19,17 @@ import org.json.simple.parser.ParseException;
 import com.fran.xmljson.entidades.FootballPlayer;
 import com.fran.xmljson.entidades.Tarea;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+/**
+ * 
+ * @author Fran
+ *
+ */
 
 public class JsonUtils {
 
@@ -285,8 +292,40 @@ public class JsonUtils {
         return Arrays.asList(new Gson().fromJson(InternetUtils.readUrl(url),clase));
 	}
 	
+	/**
+	 * Metódo genérico que dada una url con un json donde se encuentra un objeto
+	 * devuelve un objeto de la clase asociada.
+	 * Ejemplo de llamada: JsonUtils.devolverObjetoGsonGenerico("https://swapi.dev/api/people/1/?format=json",People2.class)
+	 * @param <T> Nombre de la clase
+	 * @param url
+	 * @param clase Array de elementos del tipo de la clase
+	 * @return
+	 */
 	public static <T> T devolverObjetoGsonGenerico(String url, Class<T> clase) {
         return new Gson().fromJson(InternetUtils.readUrl(url),clase);
+	}
+	
+	/**
+	 * Creamos un String con un json a partir de un objeto
+	 * @param <T> tipo del objeto
+	 * @param object nombre de la variable
+	 * @return String con el Json
+	 */
+	public static <T> String crearJson(T object) {
+		return new Gson().toJson(object);
+	}
+	
+	/**
+	 * Creamos un String con un json a partir de un objeto en un formato amigable
+	 * @param <T> tipo del objeto
+	 * @param object nombre de la variable
+	 * @return String con el Json
+	 */
+	public static <T> String crearJsonPretty(T object) {
+		return new GsonBuilder()
+				.setPrettyPrinting()
+				.create()
+				.toJson(object);
 	}
 	
 }
