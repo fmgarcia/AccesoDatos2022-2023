@@ -290,6 +290,8 @@ public class App
 	}
 	
 	public static void summarizingDouble() {
+		// Final.
+		// Recolecciona todas las estadísticas de un campo numérico
 		DoubleSummaryStatistics estadisticas = usuarios.stream()
 		.collect(Collectors.summarizingDouble(Usuario::getSueldo));
 		System.out.println("Media: " + estadisticas.getAverage());
@@ -297,6 +299,45 @@ public class App
 		System.out.println("Míximo: " + estadisticas.getMin());
 		System.out.println("Suma: " + estadisticas.getSum());
 		System.out.println("Cuenta: " + estadisticas.getCount());
+	}
+	
+	public static void reduce() {
+		// Reduce : Reduce los datos que tengamos a un ÚNICO valor 
+		double sumaSueldos = usuarios.stream()
+				.mapToDouble(e->e.getSueldo())
+				.reduce(1000, (a,b)->a*b);  // multiplica todos los sueldos tomando como valor inicial el del primer parámetro
+				//.reduce(0,Double::sum);
+		System.out.println(sumaSueldos);
+	}
+	
+	public static void joining() {
+		String nombresSeparados = usuarios.stream()
+			.map(e->e.getNombre().toLowerCase())
+			.distinct()
+			.sorted()
+			.collect(Collectors.joining(", ")).toString();
+		System.out.println(nombresSeparados);
+	}
+	
+	public static void parallelStream() {
+		long tiempo1 = System.currentTimeMillis();
+		usuarios.forEach(e->convertirMayusculas(e.getNombre()));
+		long tiempo2 = System.currentTimeMillis();
+		System.out.println("El tiempo es: " + (tiempo2-tiempo1));
+		tiempo1 = System.currentTimeMillis();
+		usuarios.parallelStream().forEach(e->convertirMayusculas(e.getNombre()));
+		tiempo2 = System.currentTimeMillis();
+		System.out.println("Tiempo en paralelo: " + (tiempo2-tiempo1));
+	}
+	
+	private static String convertirMayusculas(String nombre) {
+		try {
+			Thread.sleep(1000); // Un segundo
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return nombre.toUpperCase();
 	}
 	
     public static void main( String[] args )
@@ -317,5 +358,9 @@ public class App
         //disctint();
         //match();
         //offtopic1();
+        //summarizingDouble();
+        //reduce();
+        //joining();
+        parallelStream();
     }
 }
