@@ -76,8 +76,6 @@ public class App
     	/*InternetUtils.readUrlList("https://amanosupermercados.com/4-fruta-y-verdura?page=1").stream()
     	.filter(e->e.contains("itemprop"))
     	.forEach(e->System.out.println(e));*/
-
-    	
-    	
+   	
     }
 }

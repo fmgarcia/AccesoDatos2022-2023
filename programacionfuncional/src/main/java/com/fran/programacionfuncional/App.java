@@ -2,11 +2,15 @@ package com.fran.programacionfuncional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.fran.programacionfuncional.entidades.Usuario;
 
@@ -147,7 +151,7 @@ public class App
 		.filter(e->e.size()>2)
 		.flatMap(e->e.stream())  // junta las listas
 		.sorted()
-		.forEach(e->System.out.println(e));		
+		.forEach(e->System.out.println(e));	
 	}
 	
 	
@@ -162,6 +166,139 @@ public class App
 		
 	}
 	
+	public static void partitionigBy() {
+		// Final
+		// Parte la lista original en dos sublistas. Una que cumple la condición de partición y otra que no.
+		Map<Boolean,List<Usuario>> sublistas = usuarios.stream()
+		.collect(Collectors.partitioningBy(e->e.getSueldo()>10000));
+		
+		// Los que ganan +10000
+		System.out.println("Usuarios que ganan más de 10000 Euros:");
+		sublistas.get(true).forEach(e->System.out.println(e));
+		// Los que ganan -10000
+		System.out.println("Usuarios que ganan más de 10000 Euros:");
+		sublistas.get(false).forEach(e->System.out.println(e));	
+	}
+	
+	public static void groupingBy() {
+		// Agrupar por el elemento que pongamos. Tendremos tantas listas como elementos distintos
+		Map<Character,List<Usuario>> letras = usuarios.stream()
+				.collect(Collectors.groupingBy(e->new Character(e.getNombre().charAt(0))));
+		// acceder a los elementos
+		letras.get('P').forEach(e->System.out.println(e));
+		System.out.println(letras.containsKey('A')?
+				"Hay personas que empiezan por A":"No hay personas que empiezan por A");
+		
+		// Elementos desde posición incial a final en una lista
+		usuarios.stream()
+		.filter(e->e.getNombre().charAt(0)>='A' && e.getNombre().charAt(0)<='F')
+		.forEach(e->System.out.println(e));
+		
+		// Elementos desde posición incial a final en un mapa
+		for(int i = (int)'A';i<=(int)'F';i++) {
+			if(letras.containsKey((char)i))
+				letras.get((char)i).forEach(e->System.out.println(e));
+		}		
+	}
+	
+	public static void count() {
+		long sueldoNegativo = usuarios.stream()
+				.filter(e->e.getSueldo()<0)
+				.count();
+		System.out.println("Número de empleados con sueldo negativo: " + sueldoNegativo);
+	}
+	
+	public static void skipYLimit() {
+		// ambas son no finales
+		// skip salta un número de resultados.
+		// limit limita el número de elementos devueltos.
+		
+		// Los usuarios 3,4 y 5 que más ganan en la empresa
+		List<Usuario> usuarios345 = usuarios.stream()
+				.sorted(Comparator.comparingDouble(Usuario::getSueldo).reversed())
+				.skip(2)
+				.limit(3)
+				.collect(Collectors.toList());
+		usuarios345.forEach(e->System.out.println(e));
+		
+		// Solo mostrar
+		usuarios.stream()
+		.sorted(Comparator.comparingDouble(Usuario::getSueldo).reversed())
+		.skip(2)
+		.limit(3)
+		.forEach(e->System.out.println(e));
+	}
+	
+	public static void maxYmin() {
+		// Max devuelve el máximo valor de un campo
+		Optional<Usuario> masgana = usuarios.stream()
+				.max(Comparator.comparingDouble(Usuario::getSueldo));
+		if(masgana.isPresent())
+			System.out.println(masgana.get().toString());
+		
+		Usuario menosgana = usuarios.stream()
+				.min(Comparator.comparingDouble(Usuario::getSueldo))
+				.orElse(new Usuario(1,"Fran",0));
+		System.out.println(menosgana.toString());
+		
+	}
+	
+	public static void disctint() {
+		// No final. Saca elementos diferentes.
+		// Saca los id's diferentes porque coge el equals de la clase
+		long idsdistintos = usuarios.stream()
+				.distinct()
+				.count();
+		System.out.println("Número de usuarios distintos: "+ idsdistintos);
+		
+		long nombresdistintos = usuarios.stream()
+				.map(e->e.getNombre())
+				.distinct()
+				.count();
+		System.out.println("Número de usuarios con nombres distintos: "+ nombresdistintos);
+		System.out.println("Los nombres distintos son: ");
+		usuarios.stream()
+		.map(e->e.getNombre())
+		.distinct()
+		.forEach(e->System.out.println(e));
+	}
+	
+	public static void match() {
+		// Finales. Devuelven booleanos
+		// anyMatch. True si existe alguno que cumpla la condición
+		// allMatch. True si todos cumplen la condición
+		// noneMatch. True si ninguno cumple la condición
+		
+		// ¿Alguien gana más de 100000?
+		boolean ganaMas100000 = usuarios.stream()
+				.anyMatch(e->e.getSueldo()>100000);
+		
+		// ¿Todos ganan más de cero?
+		boolean ganaMas0 = usuarios.stream()
+				.allMatch(e->e.getSueldo()>0);
+		
+		// ¿Todos ganan más de cero?
+		boolean ganaMas0b = usuarios.stream()
+				.noneMatch(e->e.getSueldo()<0);
+		
+		System.out.println(ganaMas100000 + " " + ganaMas0 + " " + ganaMas0b);		
+	}
+	
+	public static void offtopic1() {
+		// Crea una lista de números con los valores inicial y final
+		IntStream.rangeClosed(1, 10).forEach(e->System.out.println(e + "*7=" + (e*7)));		
+	}
+	
+	public static void summarizingDouble() {
+		DoubleSummaryStatistics estadisticas = usuarios.stream()
+		.collect(Collectors.summarizingDouble(Usuario::getSueldo));
+		System.out.println("Media: " + estadisticas.getAverage());
+		System.out.println("Máximo: " + estadisticas.getMax());
+		System.out.println("Míximo: " + estadisticas.getMin());
+		System.out.println("Suma: " + estadisticas.getSum());
+		System.out.println("Cuenta: " + estadisticas.getCount());
+	}
+	
     public static void main( String[] args )
     {
         tearUp();
@@ -171,6 +308,14 @@ public class App
         //sumAvg();
         //find();
         //flatMap();
-        peek();
+        //peek();
+        //partitionigBy();
+        //groupingBy();
+        //count();
+        //skipYLimit();
+        //maxYmin();
+        //disctint();
+        //match();
+        //offtopic1();
     }
 }
