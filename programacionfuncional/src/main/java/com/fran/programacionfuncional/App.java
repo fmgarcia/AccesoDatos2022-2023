@@ -361,6 +361,6 @@ public class App
         //summarizingDouble();
         //reduce();
         //joining();
-        parallelStream();
+        //parallelStream();
     }
 }
