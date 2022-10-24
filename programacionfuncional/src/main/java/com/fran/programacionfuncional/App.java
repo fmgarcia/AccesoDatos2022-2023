@@ -243,7 +243,7 @@ public class App
 		
 	}
 	
-	public static void disctint() {
+	public static void distinct() {
 		// No final. Saca elementos diferentes.
 		// Saca los id's diferentes porque coge el equals de la clase
 		long idsdistintos = usuarios.stream()
@@ -277,7 +277,7 @@ public class App
 		boolean ganaMas0 = usuarios.stream()
 				.allMatch(e->e.getSueldo()>0);
 		
-		// ¿Todos ganan más de cero?
+		// ¿Nadie gana menos de cero?
 		boolean ganaMas0b = usuarios.stream()
 				.noneMatch(e->e.getSueldo()<0);
 		
@@ -355,7 +355,7 @@ public class App
         //count();
         //skipYLimit();
         //maxYmin();
-        //disctint();
+        //distinct();
         //match();
         //offtopic1();
         //summarizingDouble();
