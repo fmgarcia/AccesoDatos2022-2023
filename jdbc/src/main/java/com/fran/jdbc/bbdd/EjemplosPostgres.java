@@ -2,11 +2,13 @@ package com.fran.jdbc.bbdd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.fran.jdbc.entidades.Tabla1;
 
@@ -19,6 +21,7 @@ public class EjemplosPostgres {
 	public static Connection con;
 	public static Statement st;
 	public static ResultSet rs;
+	public static PreparedStatement ps;
 	
 	public static void conexion() {
 		con = null;
@@ -85,7 +88,51 @@ public class EjemplosPostgres {
 		return registros;
 	}
 	
+	public static ResultSet devolverResultSet(String sql) {		
+		try {
+			st = con.createStatement(); 
+			return st.executeQuery(sql);  // devolver resultados
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}  	
+		return null;
+	}
+	
+	public static int modificarRegistros(String sql) {		
+		try {
+			st = con.createStatement(); // Poder hacer consultar sobre la conexión
+			return st.executeUpdate(sql);  // ejecutar la consulta
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}  	
+		return 0;
+	}
+	
+	public static void preparedStatementBasica(int numero, String nombre) {
+		String sql = "Select * from tabla1 where id>? or nombre=?";
+		int registros = 0;
+		try {
+			ps = con.prepareStatement(sql); // Primero preparo la consulta
+			ps.setInt(1,  numero);  // número de ? 1 
+			ps.setString(2, nombre); // string de ? 2 			
+			rs = ps.executeQuery();  // ejecutar la consulta
+			while(rs.next()) {  // mientras haya registros a tratar
+				registros++;
+				System.out.println("ID: " + rs.getInt("id") + " Nombre: " + rs.getString("nombre"));
+				//System.out.println("ID: " + rs.getInt(1) + " Nombre: " + rs.getString(2));
+			}
+			System.out.println("El total de registros es: " + registros);
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}  		
+	}
+
+	
 	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
 		
 		//conexion2();
 		conexion();
@@ -93,9 +140,24 @@ public class EjemplosPostgres {
 		//devolverRegistros("Select * from tabla1").forEach(e->System.out.println(e));
 		// Usuarios que empiecen por 'F'
 		//devolverRegistros("Select * from tabla1 where nombre like 'F%'").forEach(e->System.out.println(e));
-		devolverRegistros("Select * from tabla1").stream()
+		/*devolverRegistros("Select * from tabla1").stream()
 		.filter(e->e.getNombre().charAt(0)=='F')
-		.forEach(e->System.out.println(e));
+		.forEach(e->System.out.println(e));*/
+		// Hacer UPDATE, DELETE o INSERT sobre una base de datos
+		/*System.out.println("El número de registros actualizados es: " 
+		+ modificarRegistros("UPDATE tabla1 SET nombre='Francisco' WHERE nombre='Fran'"));
+		System.out.println("El número de registros borrados es: " 
+		+ modificarRegistros("DELETE FROM tabla1 WHERE nombre='Francisco'"));
+		System.out.println("El número de registros insertados es: " 
+		+ modificarRegistros("INSERT INTO tabla1(id,nombre) VALUES(10,'Francisco')"));*/
+		// Ejemplo de Sql Injection
+		/*
+		System.out.println("Introduzca nombre a borrar:");
+		String nombre = sc.nextLine();
+		modificarRegistros("DELETE FROM tabla1 WHERE nombre='" + nombre + "'");  // Prueba a introducir el siguiente nombre: a' or 'a'='a
+		*/
+		//preparedStatementBasica(2,"Fran");
+		preparedStatementBasica(2,"Fran or 'a'='a'");
 		desconexion();
 	}
 
