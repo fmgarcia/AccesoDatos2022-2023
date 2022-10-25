@@ -128,6 +128,21 @@ public class EjemplosPostgres {
 			e.printStackTrace();
 		}  		
 	}
+	
+	public static int preparedStatementDML(int numero, String nombre) {
+		String sql = "UPDATE tabla1 SET nombre=? where id=?";
+		int registros = 0;
+		try {
+			ps = con.prepareStatement(sql); // Primero preparo la consulta
+			ps.setString(1, nombre); // string de ? 1 	
+			ps.setInt(2,  numero);  // número de ? 2 					
+			registros = ps.executeUpdate();  // ejecutar la sentencia de modificación			
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return registros;
+	}
 
 	
 	public static void main(String[] args) {
@@ -157,7 +172,8 @@ public class EjemplosPostgres {
 		modificarRegistros("DELETE FROM tabla1 WHERE nombre='" + nombre + "'");  // Prueba a introducir el siguiente nombre: a' or 'a'='a
 		*/
 		//preparedStatementBasica(2,"Fran");
-		preparedStatementBasica(2,"Fran or 'a'='a'");
+		//preparedStatementBasica(2,"Fran or 'a'='a'");  // No provoca sql injection
+		preparedStatementDML(1,"Francisco");
 		desconexion();
 	}
 
