@@ -107,7 +107,7 @@ public class EjemplosPostgres {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return -1;
 	}
 
 	public static void preparedStatementBasica(int numero, String nombre) {
@@ -174,6 +174,21 @@ public class EjemplosPostgres {
 		}
 		return -1;
 	}
+	
+	public static void ejemploCallableTabla() {
+		try {
+			CallableStatement cStmt = con.prepareCall("{call listar_tabla1(?)}");
+			cStmt.setString(1, "%i%"); // Cambio las ? por sus valores
+			ResultSet rs = cStmt.executeQuery();  // Obtengo el resultado
+			while(rs.next()) {
+				System.out.println("ID: " + rs.getInt("id_dev") 
+				+ " Nombre: " + rs.getString("nombre_dev"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args) {
 
@@ -210,6 +225,7 @@ public class EjemplosPostgres {
 		//preparedStatementDML(1, "Francisco");
 		//ejemploCallableStatement();
 		//System.out.println("Los resultados son: " + ejemploCallableStatementV2("cantidadpersonas(?)","%a%"));
+		ejemploCallableTabla();
 		desconexion();
 	}
 
