@@ -49,7 +49,7 @@ public class App
 		int registros = JdbcUtils.preparedStatementInsertUpdateDelete("UPDATE tabla1 SET nombre=? WHERE nombre=?", "Daniel", "Dani");
 		System.out.println("Se ha" + ((registros==1)?"":"n") + " modificado " + registros + " registro" + ((registros==1)?"":"s"));
 		JdbcUtils.desconexion();*/
-    	/*try {
+    	try {
 			String sql = "Select * from tabla1 where id>? or nombre=?";
 			ResultSet rs = JdbcUtils.preparedStatementSelectCompleto(URI, USER, PASSWORD,sql,1,"Fran");
 			while(rs.next()) {
@@ -58,6 +58,6 @@ public class App
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
     }
 }

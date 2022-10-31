@@ -209,7 +209,7 @@ public class EjemplosPostgres {
 		// preparedStatementBasica(2,"Fran or 'a'='a'"); // No provoca sql injection
 		//preparedStatementDML(1, "Francisco");
 		//ejemploCallableStatement();
-		System.out.println("Los resultados son: " + ejemploCallableStatementV2("cantidadpersonas(?)","%a%"));
+		//System.out.println("Los resultados son: " + ejemploCallableStatementV2("cantidadpersonas(?)","%a%"));
 		desconexion();
 	}
 

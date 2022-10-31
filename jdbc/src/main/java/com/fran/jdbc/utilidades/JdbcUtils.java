@@ -56,21 +56,22 @@ public class JdbcUtils {
 		return registros;
 	}
 
+	// https://stackoverflow.com/questions/22671697/try-try-with-resources-and-connection-statement-and-resultset-closing
 	public static ResultSet preparedStatementSelectCompleto(String uri, String user, String password,String sql,List<Object> parametros) {
-		ResultSet rs= null;
 		if(parametros.size()!=countMatches(sql, '?'))
 			return null;
-		try (Connection conexion = DriverManager.getConnection(uri, user, password);
-			 PreparedStatement preparedStament = conexion.prepareStatement(sql)) {
+		try (Connection conexion = DriverManager.getConnection(uri, user, password);) {
+			PreparedStatement preparedStament = conexion.prepareStatement(sql);
 			for(int i=0;i<parametros.size();i++) {
 				preparedStament.setObject(i+1, parametros.get(i));				
 			}
-			rs = preparedStament.executeQuery();
-
+			ResultSet rs = preparedStament.executeQuery();				
+			return rs;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-		return rs;
+		return null;
 	}
 	
 	public static ResultSet preparedStatementSelectCompleto(String uri, String user, String password,String sql,Object... parametros) {
