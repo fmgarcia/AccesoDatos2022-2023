@@ -1,5 +1,6 @@
 package com.fran.jdbc.utilidades;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ public class JdbcUtils {
 	public static Statement st;
 	public static PreparedStatement ps;
 	public static ResultSet rs;	
+	private static CallableStatement cs = null;
 	
 	public static void conexion(String uri, String user, String password) {
 		con = null;
@@ -145,6 +147,70 @@ public class JdbcUtils {
 	public static int preparedStatementInsertUpdateDelete(String sql,Object... parametros) {
 		return preparedStatementInsertUpdateDelete(sql,Arrays.asList(parametros));
 	}
+	
+	/**
+	 * Método genérico que llama a un CallableStatement y devuelve el resultado que nos envía la base de datos
+	 * @param metodo Nombre del procedimiento almacenado en la base de datos junto con sus parámetros indicados por '?'
+	 * @param tipoDevuelto Entero que representa un tipo del listado de Types (ej: Types.INTEGER = 4)
+	 * @param parametros Lista con los parámetros a cambiar por las '?'
+	 * @return Objeto que nos devuelve el Procedimiento almacenado de la Base de datos
+	 */
+	public static Object ejecutarCallableStatement(String metodo, int tipoDevuelto, List<Object> parametros) {
+		try {
+			cs = con.prepareCall("{call " + metodo + "}");
+			cs.registerOutParameter(1, tipoDevuelto); 													
+			for(int i=1;i<=countMatches(metodo, '?');i++) {
+				cs.setObject(i, parametros.get(i-1));
+			}
+			cs.execute();
+			return cs.getObject(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Método genérico que llama a un CallableStatement y devuelve el resultado que nos envía la base de datos
+	 * @param metodo Nombre del procedimiento almacenado en la base de datos junto con sus parámetros indicados por '?'
+	 * @param tipoDevuelto Entero que representa un tipo del listado de Types (ej: Types.INTEGER = 4)
+	 * @param parametros Lista de objetos con los parámetros a cambiar por las '?'
+	 * @return Objeto que nos devuelve el Procedimiento almacenado de la Base de datos
+	 */
+	public static Object ejecutarCallableStatement(String metodo, int tipoDevuelto, Object... parametros) {
+		return ejecutarCallableStatement(metodo,tipoDevuelto,Arrays.asList(parametros));
+	}
+
+	
+	/**
+	 * Método genérico que llama a un CallableStatement y devuelve el resultado que nos envía la base de datos en un ResultSet
+	 * @param metodo Nombre del procedimiento almacenado en la base de datos junto con sus parámetros indicados por '?'
+	 * @param parametros Lista con los parámetros a cambiar por las '?'
+	 * @return ResultSet que nos devuelve el Procedimiento almacenado de la Base de datos
+	 */
+	public static ResultSet ejecutarCallableStatement(String metodo, List<Object> parametros) {
+		try {
+			cs = con.prepareCall("{call " + metodo + "}"); 													
+			for(int i=1;i<=countMatches(metodo, '?');i++) {
+				cs.setObject(i, parametros.get(i-1));
+			}			
+			return cs.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Método genérico que llama a un CallableStatement y devuelve el resultado que nos envía la base de datos en un ResultSet
+	 * @param metodo Nombre del procedimiento almacenado en la base de datos junto con sus parámetros indicados por '?'
+	 * @param parametros Lista de Objetos con los parámetros a cambiar por las '?'
+	 * @return ResultSet que nos devuelve el Procedimiento almacenado de la Base de datos
+	 */
+	public static ResultSet ejecutarCallableStatement(String metodo, Object... parametros) {
+		return ejecutarCallableStatement(metodo,Arrays.asList(parametros));
+	}
+	
 	
 	private static int countMatches(String sql, char caracterBuscado) {
 		return (int)sql.chars().filter(e->e==caracterBuscado).count();
