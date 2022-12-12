@@ -80,9 +80,9 @@ public class Ejercicio0310 {
 	
 	private static void addPersona(ManejadorBaseDatos manejador) 
 			throws ClassNotFoundException, SQLException 
-		{
+	{
 
-		}
+	}
 
 	private static void addCliente(ManejadorBaseDatos manejador) 
 		throws ClassNotFoundException, SQLException 

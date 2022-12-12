@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 15 nov 2022 18:22:22 by Hibernate Tools 6.1.3.Final -->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.fran.biblioteca1.entidades.Libros" optimistic-lock="none" table="libros">
+        <id name="id" type="int">
+            <column name="id"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="titulo" type="string">
+            <column length="60" name="titulo"/>
+        </property>
+        <property name="autor" type="string">
+            <column length="60" name="autor"/>
+        </property>
+    </class>
+</hibernate-mapping>
