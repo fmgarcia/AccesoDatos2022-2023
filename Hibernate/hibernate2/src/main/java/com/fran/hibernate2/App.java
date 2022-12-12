@@ -1,6 +1,8 @@
 package com.fran.hibernate2;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -148,6 +150,26 @@ public class App
     			+ HibernateUtils.deleteAll(Autores.class, "cod='TOK'") + " elemento/s");
     	HibernateUtils.cerrarConexion();
     }
+    
+    public static void probarModificarObjeto() {
+    	HibernateUtils.abrirConexion();
+    	if(HibernateUtils.update(Autores.class, "cod='FRAN'", new Autores(null, "Prueba cambio")))
+    		System.out.println("Cambio realizado correctamente");
+    	else
+    		System.out.println("Fallo el update");
+    	HibernateUtils.cerrarConexion();
+    }
+    
+    public static void probarModificarObjetoMap() {
+    	Map<String,Object> mapa = new HashMap<String,Object>(); 
+		mapa.put("nombre", "Prueba cambio mapa"); 
+    	HibernateUtils.abrirConexion();
+    	if(HibernateUtils.update(Autores.class, "cod='FRAN'", mapa ))
+    		System.out.println("Cambio realizado correctamente");
+    	else
+    		System.out.println("Fallo el update");
+    	HibernateUtils.cerrarConexion();
+    }
 	
 	public static void main( String[] args )
     {
@@ -172,6 +194,8 @@ public class App
     	//probarListaObjetos();
     	//probarAnyadirObjeto();
     	//System.out.println("Se han borrado " + borrarLibro() + " elemento/s");
-    	probarBorrarObjeto();
+    	//probarBorrarObjeto();
+    	//probarModificarObjeto();
+    	probarModificarObjetoMap();
     }
 }

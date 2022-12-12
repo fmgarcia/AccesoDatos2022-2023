@@ -124,7 +124,7 @@ public class HibernateUtils {
 	public static <T> boolean update(Class<T> clase, String where, T datos) {
 		Transaction trans = null;
 		try {
-			List<T> resultados = session.createQuery("FROM " + clase.getSimpleName() + " " + where).list();
+			List<T> resultados = session.createQuery("FROM " + clase.getSimpleName() + " WHERE " + where).list();
 			trans = session.beginTransaction();
 			Arrays.asList(clase.getDeclaredFields()).forEach(f -> {
 				resultados.forEach(r -> {
@@ -164,13 +164,13 @@ public class HibernateUtils {
 	public static <T> boolean update(Class<T> clase, String where, Map<String, Object> datos) {
 		Transaction trans = null;
 		try {
-			List<T> resultados = session.createQuery("FROM " + clase.getSimpleName() + " " + where).list();
+			
+			List<T> resultados = session.createQuery("FROM " + clase.getSimpleName() + " WHERE " + where).list();
 			trans = session.beginTransaction();
 
 			Arrays.asList(clase.getDeclaredFields()).forEach(f -> {
 				resultados.forEach(r -> {
 					f.setAccessible(true);
-
 					try {
 
 						if (datos.containsKey(f.getName()))
