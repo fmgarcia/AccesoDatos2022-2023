@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+
 public class HibernateUtils {
 	
 	static SessionFactory  sessionFactory;
@@ -70,13 +71,15 @@ public class HibernateUtils {
 	 * @return True si la inserción es correcta. False si falla.
 	 */
 	public static boolean saveAll(List<Object> objects) {
+		Transaction trans = null;
 		try {
-			Transaction trans = session.beginTransaction();
+			trans = session.beginTransaction();
 			objects.forEach(object->session.persist(object)); // antiguamente save. Persist a partir de la versión 6.0  
 			trans.commit();	
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			trans.rollback();
 			return false;
 		} 
 	}
@@ -89,13 +92,15 @@ public class HibernateUtils {
 	 * @return True si la inserción es correcta. False si falla.
 	 */
 	public static boolean save(Object object) {
+		Transaction trans = null;
 		try {
-			Transaction trans = session.beginTransaction();
+			trans = session.beginTransaction();
 			session.persist(object); // antiguamente save. Persist a partir de la versión 6.0  
 			trans.commit();	
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			trans.rollback();
 			return false;
 		} 
 	}
