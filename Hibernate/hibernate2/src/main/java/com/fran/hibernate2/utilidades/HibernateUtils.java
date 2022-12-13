@@ -18,12 +18,20 @@ public class HibernateUtils {
 	static SessionFactory  sessionFactory;
 	static Session session;
 	
+	/**
+	 * Abre una conexión con la base de datos
+	 * @return True conexión abierta correctamente. False en caso contrario
+	 */
 	public static boolean abrirConexion() {		
 		sessionFactory = new Configuration().configure().buildSessionFactory();
 		session = sessionFactory.openSession();
 		return (session!=null);			
 	}
 	
+	/**
+	 * Cerrar conexión.
+	 * @return True cierro correctamente. False en caso contrario.
+	 */
 	public static boolean cerrarConexion() {
 		try {
 			if(session!=null)
@@ -37,14 +45,33 @@ public class HibernateUtils {
 		}
 	}
 	
+	/**
+	 * Dado un nombre de clase devuelve una lista con todos los elementos que tiene
+	 * 
+	 * @param clase Clase pasada
+	 * @return
+	 */
 	public static List<?> devolverListaObjetos(String clase) {		
 		return session.createQuery("FROM " + clase).list();
 	}
 	
+	/**
+	 * Dada una clase devuelve una lista con todos los elementos que tiene
+	 * 
+	 * @param <T>   Tipo de la clase
+	 * @param clase Clase pasada
+	 * @return
+	 */
 	public static <T> List<T> devolverListaObjetos(Class<T> clase){
 		return session.createQuery("from " + clase.getName()).list();
 	}
 	
+	/**
+	 * Inserta los registros en sus tablas correspondientes de la base de datos.
+	 * 
+	 * @param objects Objetos de las clases que queremos insertar
+	 * @return True si la inserción es correcta. False si falla.
+	 */
 	public static boolean saveAll(List<Object> objects) {
 		try {
 			Transaction trans = session.beginTransaction();
@@ -57,6 +84,13 @@ public class HibernateUtils {
 		} 
 	}
 	
+	
+	/**
+	 * Inserta el registro en su tabla correspondiente de la base de datos.
+	 * 
+	 * @param object Objeto de la clase que queremos insertar
+	 * @return True si la inserción es correcta. False si falla.
+	 */
 	public static boolean save(Object object) {
 		try {
 			Transaction trans = session.beginTransaction();
@@ -69,6 +103,14 @@ public class HibernateUtils {
 		} 
 	}
 	
+	
+	/**
+	 * Lista de registros a añadir a la clase. Tendrá su reflejo en la base de
+	 * datos. Es no transactional, pueden realizarse algunas operaciones y otras no.
+	 * 
+	 * @param lista Lista de objetos para añadir a la clase
+	 * @return Número de registros que se añaden correctamente
+	 */
 	public static int saveNoTransaction(List<Object> objects) {
 		int[] contador= {0};
 		objects.forEach(e->contador[0] += save(e)?1:0);
