@@ -63,7 +63,8 @@ public class HibernateUtils {
 	 * @return
 	 */
 	public static <T> List<T> devolverListaObjetos(Class<T> clase){
-		return session.createQuery("from " + clase.getName()).list();
+		//return session.createQuery("from " + clase.getName()).list();
+		return session.createSelectionQuery("From " + clase.getName(),clase).list();
 	}
 	
 	/**
@@ -210,7 +211,7 @@ public class HibernateUtils {
 	public static <T> boolean update(Class<T> clase, String where, Map<String, Object> datos) {
 		Transaction trans = null;
 		try {
-			
+
 			List<T> resultados = session.createQuery("FROM " + clase.getSimpleName() + " WHERE " + where).list();
 			trans = session.beginTransaction();
 

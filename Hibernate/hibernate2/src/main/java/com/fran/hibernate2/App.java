@@ -191,11 +191,11 @@ public class App
 			System.out.println("Fallo a la hora de añadir libro");
        
 		cerrarConexion();*/
-    	//probarListaObjetos();
+    	probarListaObjetos();
     	//probarAnyadirObjeto();
     	//System.out.println("Se han borrado " + borrarLibro() + " elemento/s");
     	//probarBorrarObjeto();
     	//probarModificarObjeto();
-    	probarModificarObjetoMap();
+    	//probarModificarObjetoMap();
     }
 }

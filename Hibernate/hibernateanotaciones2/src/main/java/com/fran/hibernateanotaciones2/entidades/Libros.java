@@ -3,6 +3,7 @@ package com.fran.hibernateanotaciones2.entidades;
 // Generated 13 dic 2022 18:56:56 by Hibernate Tools 4.3.6.Final
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,5 +70,39 @@ public class Libros implements java.io.Serializable {
 	public void setAutoreses(Set<Autores> autoreses) {
 		this.autoreses = autoreses;
 	}
+
+	@Override
+	public String toString() {
+		String resultado = "";
+		resultado += "Id: " + id + "\n";
+		resultado += "Título: " + titulo + "\n";
+		if(autoreses.size()>0) {
+			for(Autores autor : autoreses) {
+				resultado += autor.getNombre() + "\n";
+			}
+		} else {
+			resultado += "Este libro no tiene autor";
+		}
+		return resultado;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Libros other = (Libros) obj;
+		return id == other.id;
+	}
+	
+	
 
 }
