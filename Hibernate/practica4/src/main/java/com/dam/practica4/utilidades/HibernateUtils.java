@@ -50,7 +50,8 @@ public class HibernateUtils {
 	 * @return
 	 */
 	public static List<?> devolverListaObjetos(String clase) {		
-		return session.createQuery("FROM " + clase).list();
+		//return session.createQuery("FROM " + clase).list();
+		return session.createSelectionQuery("FROM " + clase).list();
 	}
 	
 	/**
