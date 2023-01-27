@@ -124,11 +124,28 @@ public class ClienteController {
 	}
 	
 	
-	@DeleteMapping("/{id}")
+	/*@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void borrar(@PathVariable Long id) {
 		clienteService.deleteById(id);
+	}*/
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id){
+		Map<String,Object> response = new HashMap<>();
+		try {
+			clienteService.deleteById(id);
+		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+			response.put("mensaje", "Error al eliminar el id");
+			response.put("error", e.getMessage().concat(":")
+					.concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		response.put("mensaje", "El cliente se ha borrado correctamente");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+
 	}
+	
 	
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
