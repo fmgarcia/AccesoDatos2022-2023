@@ -24,8 +24,8 @@ public class IndexController {
 	
 	@GetMapping("/perfil")
 	public String perfil(Model model) {
-		//Usuario usuario = new Usuario("Fran", "García","fran@iessanvicente.com");
-		Usuario usuario = new Usuario("Fran", "García");
+		Usuario usuario = new Usuario("Fran", "García","fran@iessanvicente.com");
+		//Usuario usuario = new Usuario("Fran", "García");
 		model.addAttribute("titulo","Perfil");
 		model.addAttribute("usuario",usuario);
 		return "perfil";
