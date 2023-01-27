@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,9 +27,13 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	@NotEmpty(message="el nombre no puede estar vacio")
+	@Size(min=4, max=12, message="el nombre debe contener entre 4 y 12 caracteres")
 	@Column(name="nombre", nullable=false)
 	private String nombre;
 	private String apellido;
+	@NotEmpty(message="el email no puede estar vacio")
+	@Email(message="La dirección de correo no está bien formada")
 	@Column(name="email", nullable=false, unique=true)
 	private String email;
 	@Column(name="create_at")

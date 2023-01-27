@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fran.springboot.backend.mvc.models.entity.Cliente;
 import com.fran.springboot.backend.mvc.models.services.IClienteService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -92,12 +94,12 @@ public class ClienteController {
 	}*/
 	
 	@PostMapping("")
-	public ResponseEntity<?> create(@RequestBody Cliente cliente, BindingResult result){
+	public ResponseEntity<?> create(@Valid @RequestBody Cliente cliente, BindingResult result){
 		
 		Cliente clienteNew = null;
 		Map<String,Object> response = new HashMap<>();
 		
-		/*if(result.hasErrors()) {
+		if(result.hasErrors()) {
 
 			List<String> errors = result.getFieldErrors()
 					.stream()
@@ -106,7 +108,7 @@ public class ClienteController {
 			
 			response.put("errors", errors);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-		}*/
+		}
 		
 		try {
 			cliente.setCreateAt(LocalDate.now());  // Cambia la fecha a la actual
@@ -147,7 +149,7 @@ public class ClienteController {
 	}
 	
 	
-	@PutMapping("/{id}")
+	/*@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id){
 		Cliente clienteActualizar = clienteService.findById(id);
@@ -156,5 +158,56 @@ public class ClienteController {
 		clienteActualizar.setEmail(cliente.getEmail());
 		clienteService.save(clienteActualizar);
 		return clienteActualizar;
+	}*/
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, @PathVariable Long id, BindingResult result){
+		
+		Cliente clienteActual = null;
+		Cliente clienteUpdated = null;
+		Map<String,Object> response = new HashMap<>();
+		
+		if(result.hasErrors()) {
+
+			List<String> errors = result.getFieldErrors()
+					.stream()
+					.map(err -> "El campo '" + err.getField() +"' "+ err.getDefaultMessage())
+					.collect(Collectors.toList());
+			
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+		
+		try {
+			clienteActual = clienteService.findById(id); // El cliente puede existir o no
+		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+			response.put("mensaje", "Error al conectar con la base de datos");
+			response.put("error", e.getMessage().concat(":")
+					.concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(clienteActual==null) { // No existe en la base de datos
+			response.put("mensaje", "El cliente con ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		// Si llegamos aquí es que el cliente que queremos modificar SI existe
+		try {
+			clienteActual.setNombre(cliente.getNombre());
+			clienteActual.setApellido(cliente.getApellido());
+			clienteActual.setEmail(cliente.getEmail());
+			clienteUpdated = clienteService.save(clienteActual);
+		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+			response.put("mensaje", "Error al conectar con la base de datos");
+			response.put("error", e.getMessage().concat(":")
+					.concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "El cliente se ha modificado correctamente");
+		response.put("cliente", clienteUpdated);
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+
 	}
+	
 }
