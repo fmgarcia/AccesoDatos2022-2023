@@ -3,6 +3,8 @@ package com.fran.springboot.backend.mvc.models.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +33,7 @@ public class Cliente implements Serializable {
 	@Size(min=4, max=12, message="el nombre debe contener entre 4 y 12 caracteres")
 	@Column(name="nombre", nullable=false)
 	private String nombre;
+	@JsonIgnore
 	private String apellido;
 	@NotEmpty(message="el email no puede estar vacio")
 	@Email(message="La dirección de correo no está bien formada")
