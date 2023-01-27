@@ -97,7 +97,7 @@ public class ClienteController {
 		Cliente clienteNew = null;
 		Map<String,Object> response = new HashMap<>();
 		
-		if(result.hasErrors()) {
+		/*if(result.hasErrors()) {
 
 			List<String> errors = result.getFieldErrors()
 					.stream()
@@ -106,7 +106,7 @@ public class ClienteController {
 			
 			response.put("errors", errors);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-		}
+		}*/
 		
 		try {
 			cliente.setCreateAt(LocalDate.now());  // Cambia la fecha a la actual
