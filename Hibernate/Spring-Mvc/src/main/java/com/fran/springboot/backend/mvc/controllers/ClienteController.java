@@ -29,7 +29,7 @@ import com.fran.springboot.backend.mvc.models.services.IClienteService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 	
 	@Autowired
